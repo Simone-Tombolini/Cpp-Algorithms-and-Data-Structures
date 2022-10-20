@@ -1,1 +1,1 @@
-# LCS-function
+# LCS
