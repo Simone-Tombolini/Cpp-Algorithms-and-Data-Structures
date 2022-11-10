@@ -4,6 +4,6 @@ using namespace std;
 
 int main(int argc, char *argv[]){
 
-    cout << LCS("w", "")<<endl;
+    cout << LCS("wgdf", "w")<<endl;
     return 0;
 }
