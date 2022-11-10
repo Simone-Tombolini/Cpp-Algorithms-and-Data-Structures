@@ -1,8 +1,9 @@
 #include<iostream>
+#include "LCS.h"
+using namespace std;
 
-void main(int argc, char *argv){
-    int i =0;
-    int j = 0;
-    int x =42;
-    //commento 3
+int main(int argc, char *argv[]){
+
+    cout << LCS("w", "")<<endl;
+    return 0;
 }
