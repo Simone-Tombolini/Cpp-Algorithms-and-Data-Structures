@@ -4,6 +4,10 @@ using namespace std;
 
 int main(int argc, char *argv[]){
 
-    cout << LCS("wgdf", "w")<<endl;
+    string x = "012345";
+    cout << LCS("abcd", "abbc") << endl;
+    cout << x[6];
+
+    
     return 0;
 }
