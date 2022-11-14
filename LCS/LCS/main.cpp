@@ -5,7 +5,7 @@ using namespace std;
 int main(int argc, char *argv[]){
 
     string x = "012345";
-    cout << LCS("abcd", "abbc") << endl;
+    cout << LCS("aaaa", "abbb") << endl;
     cout << x[6];
 
     
