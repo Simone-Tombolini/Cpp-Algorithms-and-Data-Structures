@@ -1,10 +1,10 @@
-main.exe: main.o LCS.o
-	g++ main.o LCS.o -o main.exe
+tests.exe: tests.o LCS.o
+	g++ tests.o LCS.o -o tests.exe
 
-main.o: main.cpp
-	g++ -c main.cpp -o main.o
+tests.o: tests.cpp
+	g++ -c tests.cpp -o tests.o
 
-LCS.o: LCS.cpp
+LCS.o: LCS.cpp LCS.h
 	g++ -c LCS.cpp -o LCS.o
 
 .PHONY: clean
