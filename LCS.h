@@ -17,6 +17,18 @@
 
     template <typename T> void print_matrix(T** matrix, uli l1, uli l2);
 
+    /**
+     * @brief the recostruction of the lcs, support method
+     * the recostruction of the lcs, support method
+     * @tparam T type of the pointer
+     * @tparam Q type of the length of the string
+     * @param pointer the pointer to the movement matrix 
+     * @param x_len the x len.
+     * @param y_len the y len
+     * @param x first string
+     * @param y second string
+     * @return string the lcs
+     */
     template <typename T, typename Q> string find_LCS(T pointer, Q x_len, Q y_len, const string &x, const string &y) {
         string res = "";
         while (pointer[y_len][x_len] != 0)//if 0 is encountered the lcs is ternmined
@@ -43,6 +55,21 @@
         }
         return res;
     }
+    
+    /**
+     * @brief inizialize the movement matrix, support method
+     * 
+     * @tparam T type of matrix
+     * @tparam V type of lenght matrix
+     * @tparam Q type of length
+     * @param x first string
+     * @param y second string
+     * @param matrix the not instancieted matrix of movemnt 
+     * @param matrix_len the altready istancieted matrix of lenght
+     * @param size_x the x len
+     * @param size_y the y len
+     * @param print Optional parameter that print on the cout the tables of the lcs, debug only purpose
+     */
     template <typename T, typename V, typename Q> void inizalize_matrix(const string &x, const string &y, T** matrix, V** matrix_len, const Q& size_x, const Q& size_y, bool print = false)
     {
         //0 = null
@@ -95,7 +122,17 @@
 
     }
   
-    
+    /**
+     * @brief 
+     * 
+     * @tparam T matix type
+     * @param x first string
+     * @param y second string
+     * @param matrix the not instancieted matrix of lenght
+     * @param size_x the x len
+     * @param size_y the y len
+     * @param print Optional parameter that print on the cout the tables of the lcs, debug only purpose
+     */
     template <typename T> void inizalize_matrix_len(const string& x, const string& y, T** matrix, const uli& size_x, const uli& size_y, bool print = false)
     {
         //inizializing array and firs coloum
@@ -139,7 +176,14 @@
       }
 
     }
-
+    /**
+     * @brief print a matrix, debug only purpose
+     * print on cout a matrix
+     * @tparam T the type of the matrix
+     * @param matrix the matrix to be printed
+     * @param l1 the row lenght
+     * @param l2 the coloum lenght
+     */
     template <typename T> void print_matrix(T** matrix, uli l1, uli l2)
     {
         cout << "start print matrix: " << endl;

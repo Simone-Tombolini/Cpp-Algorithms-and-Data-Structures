@@ -2,6 +2,16 @@
 #include <iostream>
 #include<stdexcept>
 
+/**
+ * @brief Longest Common Subsequence between 2 string   
+ * From wikipedia: The longest common subsequence (LCS) problem is the problem of finding the longest subsequence common to all sequences 
+ * in a set of sequences (often just two sequences). It differs from the longest common substring problem: unlike substrings, subsequences 
+ * are not required to occupy consecutive positions within the original sequences. 
+ * @param x First string
+ * @param y Second string
+ * @param print Optional parameter that print on the cout the tables of the lcs, debug only purpose
+ * @return string the LCS returned
+ */
 string LCS(const string &x, const string& y, const bool print)
 {
     string res = "";
@@ -120,11 +130,17 @@ string LCS(const string &x, const string& y, const bool print)
         }
        
     }
-    
-    
+
     return res;
 }
-
+/**
+ * @brief Longest Common Subsequence between 2 string Lenght
+ * this method return the lenght of the LCS bethween the 2 parameters
+ * @param x First string
+ * @param y Second string
+ * @param print Optional parameter that print on the cout the tables of the lcs, debug only purpose
+ * @return int The Length of the LCS
+ */
 int LCS_len(const string &x, const string &y, bool print)
 {
     int res = 0;
