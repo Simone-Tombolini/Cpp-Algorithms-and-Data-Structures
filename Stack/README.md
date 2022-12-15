@@ -14,4 +14,5 @@ Considered as a linear data structure, or more abstractly a sequential collectio
 
 This images can help to visualize how this class work
 
+![Stack image]()
 
