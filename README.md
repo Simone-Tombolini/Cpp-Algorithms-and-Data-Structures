@@ -6,3 +6,6 @@ In order of development:
 * [LCS Longest Common Subsequence](LCS/)
 * [Mergesort](Merge_Stort/)
 * [Stack](Stack/)
+
+
+*Totaly free license.*
