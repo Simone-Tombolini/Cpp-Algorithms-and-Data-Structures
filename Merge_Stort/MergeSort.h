@@ -66,7 +66,7 @@ template<typename T> void merge(T* array, type_index left, type_index avg, type_
 }
 /**
  * @brief ording an array by mergesort algorithm
- * this funcion ordre in decrasing ordrer an arry, it require the < operator defind for the type of the array 
+ * this funcion ordre in decrasing ordrer an arry, it require the < operator defined for the type of the array 
  * @tparam T type of the array
  * @param array the arrato to be ordered
  * @param left the left index, where the part to order start, set to 0 for order all the array
