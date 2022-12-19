@@ -1,10 +1,24 @@
-#ifndef _MERGESORT
-#define _MERGESORT
+#ifndef MERGESORT_H
+#define MERGESORT_H
 #include<utility>
 
 typedef int type_index;
 using namespace std;
 
+
+bool minor_than_int(const int &a, const int &b) {
+return a<b;
+}
+bool grater_than_int(const int &a, const int &b) {
+return a>b;
+}
+
+bool minor_than_double(const double &a, const double &b) {
+return a<b;
+}
+bool grater_than_double(const double &a, const double &b) {
+return a>b;
+}
 /**
  * @brief merge phase of mergsort support method
  * given the already ordred 2 part of the array, the left and rigth index and the averege, this method merge the 2 array 
@@ -14,21 +28,25 @@ using namespace std;
  * @param left the left index
  * @param avg the averege
  * @param right the right index
+ * @param f functor
  * 
  */
-template<typename T> void merge(T* array, type_index left, type_index avg, type_index right)
+template<typename T, typename F> 
+void merge(T* array, type_index left, type_index avg, type_index right, const F &f)
 {
 	//saving the index in temp variables
 	type_index i = left;
 	type_index j = avg + 1;
 	//setting index for the support array
 	type_index k = 0;
+	//functor
+	
 	//creating support array
 	T *temp_array = new T[(right - left) + 1];
 	while (i<=avg && j<=right)
 	{
 		//filling the support array whit comparison, first the bigger
-		if (array[i] < array[j])
+		if (f(array[i], array[j]))
 		{
 			temp_array[k] = array[j];
 			++j;//moving index
@@ -55,7 +73,7 @@ template<typename T> void merge(T* array, type_index left, type_index avg, type_
 		++j;
 		++k;
 	}
-	//trandering the temp array in the normal one
+	//tranfering the temp array in the normal one
 	for (type_index i = left; i <= right; ++i) 
 	{
 		array[i] = temp_array[i - left];
@@ -72,17 +90,17 @@ template<typename T> void merge(T* array, type_index left, type_index avg, type_
  * @param left the left index, where the part to order start, set to 0 for order all the array
  * @param right the right index, where the part to order finish, set to the length of the array for order all the array
  */
-template<typename T> void merge_sort(T *array, int left, int right) 
+template<typename T, typename F> void merge_sort(T *array, int left, int right, const F &f) 
 {
 	if (left < right)//base case
 	{
 		//step case
 		int avg = (left + right) / 2; // avg calculus
 		//divide et impera phase
-		merge_sort(array, left, avg);
-		merge_sort(array, avg + 1, right);
+		merge_sort(array, left, avg, f);
+		merge_sort(array, avg + 1, right, f);
 		//merging the result
-		merge(array, left, avg, right);
+		merge(array, left, avg, right, f);
 	}
 }
 
