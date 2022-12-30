@@ -11,14 +11,22 @@ void test_metodi_fonamentali()
     #endif
    
     //creazione di una matrice vuota, test costruttore di default
-    matrix3D<int> pippo0; 
+    matrix3D<int> matrice0; 
     
     //creazione di una matrice con il valore di default 0.1, test costruttore secondario
-    matrix3D<double> pippo1(4, 2, 3, 0.1);
-    
-    matrix3D<double> pippo2(pippo1);
+    cout << "Matrice con metodo costruttore secondario" << endl;
+    matrix3D<double> matrice1(4, 2, 3, 0.1);
 
-    cout<< pippo1(1, 1, 1) << endl;
+    cout << "Matrice con metodo costruttore per copia" << endl;
+    matrix3D<double> matrice2(matrice1);
+
+    cout << "valore non modificato " << matrice1(1, 1, 1) << endl;
+    matrice1(1, 1, 1) = 5;
+    cout << "valore modificato " << matrice1(1, 1, 1) << endl;
+    
+    matrice2 = matrice1;
+    //prova di stampa matrice
+    cout << matrice1;
 }
 
 

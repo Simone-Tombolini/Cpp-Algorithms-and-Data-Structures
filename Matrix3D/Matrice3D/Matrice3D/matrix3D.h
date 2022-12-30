@@ -6,6 +6,7 @@
 
 #include<iostream>
 #include<cassert>
+#include<algorithm>
 
 using namespace std;
 
@@ -67,10 +68,8 @@ public:
             
             }
             //stampa di debug
-            #ifndef NDEBUG
-            cout << "matrice creata" << endl;
-            print_matrix();
-            #endif
+            print_matrix("matrice creata");
+          
         }
         //questo blocco try catch serve nel caso venga lanciata un eccezione dal fallimento di una new
         //in questo caso la classe potrebbe essere in uno stato incoerente, e quindi effettuo una clear() 
@@ -122,10 +121,8 @@ public:
 
             }
             //stampa di debug
-            #ifndef NDEBUG
-            cout << "matrice copiata" << endl;
-            print_matrix();
-            #endif
+            print_matrix("matrice copiata");
+            
         }
         //questo blocco try catch serve nel caso venga lanciata un eccezione dal fallimento di una new
         //in questo caso la classe potrebbe essere in uno stato incoerente, e quindi effettuo una clear() 
@@ -138,8 +135,17 @@ public:
         }
     }
 
+    matrix3D& operator=(const matrix3D& other) 
+    {
+        if (this != &other) 
+        {
+            matrix3D tmp(other);
+            this->swap(tmp);
+        }
+        return *this;
+    }
 
-    T& operator()(size_type z, size_type y, size_type x) {
+    T& operator()(size_type z, size_type y, size_type x) const {
         
         return _matrix[z][y][x];
     }
@@ -177,10 +183,43 @@ public:
         #endif
     }
 
-private:
-    void print_matrix() 
+    friend std::ostream& operator<<(std::ostream& os,
+        const matrix3D<T>& mat) {
+        os << "{size z: " << mat.sz_z << std::endl;
+        os << "size y: " << mat.sz_y << std::endl;
+        os << "size x: " << mat.sz_x << "}" << std::endl;
+        os << "{";
+        for (size_type k = 0; k < mat.sz_z; ++k) {
+            if(k!=0)
+            os << std::endl;
+            os << "[ ";
+            for (size_type j = 0; j < mat.sz_y; ++j) {
+                if(j!=0)
+                os << endl;
+
+                for (size_type i = 0; i < mat.sz_x; ++i) {
+                    os << mat(k,j,i) << " ";
+                }
+                
+            }
+            os << "]";
+
+        }
+        os << "}" <<std::endl;
+        return os;
+    }
+    void swap(matrix3D& other) {
+        std::swap(_matrix, other._matrix);
+        std::swap(sz_x, other.sz_x);
+        std::swap(sz_y, other.sz_y);
+        std::swap(sz_z, other.sz_z);
+    }
+
+    private:
+    
+    void print_matrix(const string message = "", const bool enabled = true) const
     {
-        for (size_type k = 0; k < sz_z; ++k) {
+       /* for (size_type k = 0; k < sz_z; ++k) {
             cout << "pagina " << k<< ":" <<endl;
             
             for (size_type j = 0; j < sz_y; ++j) {
@@ -192,7 +231,15 @@ private:
                 cout << endl;
             }
 
+        }*/
+        #ifndef NDEBUG
+        if (enabled == true) 
+        {
+            cout << message<<endl;
+            cout << *this;
         }
+        #endif
+        
     }
 };
 
