@@ -10,9 +10,14 @@
 
 using namespace std;
 
-
-
 template<typename T>
+struct eql_default {
+    bool operator()(T a, T b) {
+        return a == b;
+    }
+};
+
+template<typename T, typename E = eql_default<T>>
 class matrix3D
 {
 private:
@@ -245,7 +250,7 @@ public:
     }
 
     friend std::ostream& operator<<(std::ostream& os,
-        const matrix3D<T>& mat) {
+        const matrix3D& mat) {
         os << mat.sz_z << ' ';
         os << mat.sz_y << ' ';
         os << mat.sz_x << ' ' << std::endl;
@@ -299,6 +304,36 @@ public:
         return return_matrix;
     }
 
+    
+    bool operator==( matrix3D &other) const {
+        E eql;
+        int x, y, z;
+        x = other.size_x();
+        y = other.size_y();
+        z = other.size_z();
+
+        for (size_type k = 0; k < z; ++k) {//scorro i piani
+
+            for (size_type j = 0; j < y; ++j) {//scorro le righe
+
+                for (size_type i = 0; i < x; ++i) {//scorro le colonne
+                    if (!(eql(other(k, j, i), _matrix[k][j][i]))) {
+                        return false;
+                    }//COMPARAZIONE AGGIUNGERE FUNTORE è corretto?
+
+                }
+
+            }
+
+        }
+        return true;
+
+    }
+    //è giusto, fare test
+    bool operator!=( matrix3D& other) const
+    {
+        return !(*this == other);
+    }
 
     private:
     
@@ -349,7 +384,6 @@ public:
         
     }
 };
-
 
 
 #endif

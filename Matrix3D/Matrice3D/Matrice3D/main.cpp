@@ -64,10 +64,33 @@ void test_metodi_ausiliari_primitivi(bool set = true) {
         cout << matrice1;
         cout << endl;
 
-        cout << "test metodo slice()<<" << endl;
-        matrix3D<double> matrice_tagliata = matrice1.slice(100, 2, 1);
+        cout << "test metodo slice()" << endl;
+        matrix3D<double> matrice_tagliata = matrice1.slice(1, 2, 1);
         cout << matrice_tagliata;
         cout << endl;
+        cout << "test operatore ==" << endl;
+        struct eql_int {
+            bool operator()(int a, int b) {
+                return a == b;
+            }
+        };
+        matrix3D<double> matrice2(matrice1);
+      
+        if (matrice1 == matrice2) {
+            cout << "matrice1 == matrice2 risultato: true" << endl;
+        }
+        else {
+            cout << "matrice1 == matrice2 risultato: false" << endl;
+        }
+        cout << "test operatore !=" << endl;
+       
+        
+        if (matrice1 != matrice2) {
+            cout << "matrice1 != matrice2 risultato: true" << endl;
+        }
+        else {
+            cout << "matrice1 != matrice2 risultato: false" << endl;
+        }
     }
 }
 void test_matrice_costante_primitivi(bool set = true) 
@@ -88,7 +111,7 @@ int main()
 
     test_metodi_fonamentali_primitivi();
     test_metodi_ausiliari_primitivi();
-    test_matrice_costante_primitivi();
+    test_matrice_costante_primitivi(false);
     #endif
 }
 
