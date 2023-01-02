@@ -23,129 +23,144 @@ template<typename T, typename E = eql_default<T>>
 class matrix3D
 {
 private:
-    //IMPORTANTE TOGLERE DA PUBBLICO
-    typedef unsigned long int size_type;
-    T* _matrix;
-    size_type sz_z;
-    size_type sz_y;
-    size_type sz_x;
+	//IMPORTANTE TOGLERE DA PUBBLICO
+	typedef unsigned long int size_type;
+	T* _matrix;
+	size_type sz_z;
+	size_type sz_y;
+	size_type sz_x;
 	size_type _dim;
 
 public:
-  
-  
-    matrix3D() :
-        _matrix(nullptr), sz_z(0), sz_y(0), sz_x(0), _dim(0)
-    {
-    #ifndef NDEBUG
-        cout << "matrice vuota creata" << endl;
-    #endif
-    }
-    matrix3D(size_type size_z, size_type size_y, size_type size_x) :
-        _matrix(nullptr), sz_z(0), sz_y(0), sz_x(0), _dim(0)
-    {
-        assert(size_z > 0);
-        assert(size_y > 0);
-        assert(size_x > 0);
-        try {
-            sz_z = size_z;
-            sz_y = size_y;
-            sz_x = size_x;
-			_dim = (sz_z) * (sz_y) * (sz_x);
-            //creazione array dei piani
-            _matrix = new T[_dim];
 
-            //stampa di debug
-            print_matrix("matrice creata");
 
-        }
-        //questo blocco try catch serve nel caso venga lanciata un eccezione dal fallimento di una new
-        //in questo caso la classe potrebbe essere in uno stato incoerente, e quindi effettuo una clear() 
-        //per riportarla ad uno stato coerente e rilancio l'eccezione
-        //questo blocco verrà ripetuto più volte nel progetto, questi commenti sono da considerarsi vaidi 
-        catch (...)
-        {
-            clear();//evito memory leack
-            throw;//rilancio l'eccezzione
-        }
-    }
-    matrix3D(size_type size_z, size_type size_y, size_type size_x, const T &default_value) : 
-        _matrix(nullptr), sz_z(0), sz_y(0), sz_x(0), _dim(0)
+	matrix3D() :
+		_matrix(nullptr), sz_z(0), sz_y(0), sz_x(0), _dim(0)
 	{
-        assert(size_z > 0);
-        assert(size_y > 0);
-        assert(size_x > 0);
-        try{
-            sz_z = size_z;
-            sz_y = size_y;
-            sz_x = size_x;
-			_dim = ((sz_z ) * (sz_y) * (sz_x));
+#ifndef NDEBUG
+		cout << "matrice vuota creata" << endl;
+#endif
+	}
+	matrix3D(size_type size_z, size_type size_y, size_type size_x) :
+		_matrix(nullptr), sz_z(0), sz_y(0), sz_x(0), _dim(0)
+	{
+		assert(size_z > 0);
+		assert(size_y > 0);
+		assert(size_x > 0);
+		try {
+			sz_z = size_z;
+			sz_y = size_y;
+			sz_x = size_x;
+			_dim = (sz_z) * (sz_y) * (sz_x);
+			//creazione array dei piani
+			_matrix = new T[_dim];
+
+			//stampa di debug
+			print_matrix("matrice creata");
+
+		}
+		//questo blocco try catch serve nel caso venga lanciata un eccezione dal fallimento di una new
+		//in questo caso la classe potrebbe essere in uno stato incoerente, e quindi effettuo una clear() 
+		//per riportarla ad uno stato coerente e rilancio l'eccezione
+		//questo blocco verrà ripetuto più volte nel progetto, questi commenti sono da considerarsi vaidi 
+		catch (...)
+		{
+			clear();//evito memory leack
+			throw;//rilancio l'eccezzione
+		}
+	}
+	matrix3D(size_type size_z, size_type size_y, size_type size_x, const T& default_value) :
+		_matrix(nullptr), sz_z(0), sz_y(0), sz_x(0), _dim(0)
+	{
+		assert(size_z > 0);
+		assert(size_y > 0);
+		assert(size_x > 0);
+		try {
+			sz_z = size_z;
+			sz_y = size_y;
+			sz_x = size_x;
+			_dim = ((sz_z) * (sz_y) * (sz_x));
 			_matrix = new T[_dim];
 			for (size_type i = 0; i < _dim; ++i) {
 				_matrix[i] = default_value;
 			}
 
-            //stampa di debug
-            print_matrix("matrice creata");
-          
-        }
-        //questo blocco try catch serve nel caso venga lanciata un eccezione dal fallimento di una new
-        //in questo caso la classe potrebbe essere in uno stato incoerente, e quindi effettuo una clear() 
-        //per riportarla ad uno stato coerente e rilancio l'eccezione
-        //questo blocco verrà ripetuto più volte nel progetto, questi commenti sono da considerarsi vaidi 
-        catch (...) 
-        {
-            clear();//evito memory leack
-            throw;//rilancio l'eccezzione
-        }
+			//stampa di debug
+			print_matrix("matrice creata");
+
+		}
+		//questo blocco try catch serve nel caso venga lanciata un eccezione dal fallimento di una new
+		//in questo caso la classe potrebbe essere in uno stato incoerente, e quindi effettuo una clear() 
+		//per riportarla ad uno stato coerente e rilancio l'eccezione
+		//questo blocco verrà ripetuto più volte nel progetto, questi commenti sono da considerarsi vaidi 
+		catch (...)
+		{
+			clear();//evito memory leack
+			throw;//rilancio l'eccezzione
+		}
 	}
 
 	~matrix3D()
 	{
-        clear();
-        #ifndef NDEBUG
-        cout << "matrice distrutta" << endl;
-        #endif
+		clear();
+#ifndef NDEBUG
+		cout << "matrice distrutta" << endl;
+#endif
 	}
 
-    matrix3D(const matrix3D<T>& other): 
-        _matrix(nullptr), sz_z(0), sz_y(0), sz_x(0), _dim(0)
-    {
-        try {
-            sz_z = other.size_z();
-            sz_y = other.size_y();
-            sz_x = other.size_x();
+	matrix3D(const matrix3D<T>& other) :
+		_matrix(nullptr), sz_z(0), sz_y(0), sz_x(0), _dim(0)
+	{
+		try {
+			sz_z = other.size_z();
+			sz_y = other.size_y();
+			sz_x = other.size_x();
 			_dim = other.dim();
 			_matrix = new T[_dim];
-		
-        
+
+
 			for (size_type i = 0; i < _dim; ++i) {
 				_matrix[i] = other._matrix[i];//attenzione
 			}
-            //stampa di debug
-            print_matrix("matrice copiata");
-            
-        }
-        //questo blocco try catch serve nel caso venga lanciata un eccezione dal fallimento di una new
-        //in questo caso la classe potrebbe essere in uno stato incoerente, e quindi effettuo una clear() 
-        //per riportarla ad uno stato coerente e rilancio l'eccezione
-        //questo blocco verrà ripetuto più volte nel progetto, questi commenti sono da considerarsi vaidi 
-        catch (...)
-        {
-            clear();//evito memory leak
-            throw;//rilancio l'eccezzione
-        }
-    }
+			//stampa di debug
+			print_matrix("matrice copiata");
 
-    matrix3D& operator=(const matrix3D& other) 
-    {
-        if (this != &other) 
-        {
-            matrix3D tmp(other);
-            this->swap(tmp);
-        }
-        return *this;
-    }
+		}
+		//questo blocco try catch serve nel caso venga lanciata un eccezione dal fallimento di una new
+		//in questo caso la classe potrebbe essere in uno stato incoerente, e quindi effettuo una clear() 
+		//per riportarla ad uno stato coerente e rilancio l'eccezione
+		//questo blocco verrà ripetuto più volte nel progetto, questi commenti sono da considerarsi vaidi 
+		catch (...)
+		{
+			clear();//evito memory leak
+			throw;//rilancio l'eccezzione
+		}
+	}
+
+	matrix3D& operator=(const matrix3D& other)
+	{
+		if (this != &other)
+		{
+			matrix3D tmp(other);
+			this->swap(tmp);
+		}
+		return *this;
+	}
+	template <typename C>
+	matrix3D(C c)
+		: _matrix(nullptr), sz_z(c.size_z()), sz_y(c.size_y()), sz_x(c.size_x()), _dim(100)
+	{
+		/* = this->size_z();
+		c.sz_y = this->size_y();
+		c.sz_x = this->size_x();
+		c._dim = this->dim();*/
+		_matrix = new T[_dim];
+		for (size_type i = 0; i < _dim; ++i) {
+			_matrix[i] =static_cast<C>(c(0,0,0));
+			
+			cout << "prova ";
+		}
+	}
 
     size_type size_z(void) const{
         return sz_z;
@@ -785,9 +800,30 @@ public:
         //cout << &_matrix[sz_z-1][sz_y-1][sz_x];
         }
         #endif
-        
+	
     }
+
 };
 
+//FUNZIONI GLOBALI
+template<typename T, typename Q,typename F, typename iter>
+matrix3D<Q> transform(matrix3D<T> matrix) 
+{
+	cout << "prova";
+	F f;
+	matrix3D<Q> res_matrix(matrix.size_z(), matrix.size_y(), matrix.size_x());
+	iter b, e;
+	iter res_b, res_e;
+	b = matrix.begin();
+	e = matrix.end();
+	res_b = res_matrix.begin();
+	res_e = res_matrix.end();
+	for (; b != e; ++b) {
+		*res_b = f(*b);
+		
+		++res_b;
+	}
+	return res_matrix;
+}
 
 #endif

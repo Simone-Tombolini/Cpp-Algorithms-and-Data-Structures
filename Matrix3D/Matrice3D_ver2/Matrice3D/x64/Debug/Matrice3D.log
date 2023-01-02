@@ -1,4 +1,23 @@
 ﻿  main.cpp
-C:\Users\PC\Desktop\Basic-Cpp-Algorithms\Matrix3D\Matrice3D_ver2\Matrice3D\matrix3D.h(249): warning C4715: 'matrix3D<int,eql_default<int> >::operator()': non tutti i percorsi di controllo restituiscono un valore
-C:\Users\PC\Desktop\Basic-Cpp-Algorithms\Matrix3D\Matrice3D_ver2\Matrice3D\matrix3D.h(249): warning C4715: 'matrix3D<double,eql_default<double> >::operator()': non tutti i percorsi di controllo restituiscono un valore
-  Matrice3D.vcxproj -> C:\Users\PC\Desktop\Basic-Cpp-Algorithms\Matrix3D\Matrice3D_ver2\x64\Debug\Matrice3D.exe
+C:\Users\PC\Desktop\Basic-Cpp-Algorithms\Matrix3D\Matrice3D_ver2\Matrice3D\matrix3D.h(159,1): error C2440: '=': impossibile convertire da 'C' a 'T'
+          with
+          [
+              C=matrix3D<int,eql_default<int>>
+          ]
+          and
+          [
+              T=double
+          ]
+C:\Users\PC\Desktop\Basic-Cpp-Algorithms\Matrix3D\Matrice3D_ver2\Matrice3D\matrix3D.h(159,16): message : Non è disponibile alcun operatore di conversione definito dall'utente oppure non è possibile chiamare l'operatore
+C:\Users\PC\Desktop\Basic-Cpp-Algorithms\Matrix3D\Matrice3D_ver2\Matrice3D\main.cpp(265): message : vedere il riferimento all'istanza 'matrix3D<double,eql_default<T>>::matrix3D<matrix3D<int,eql_default<int>>>(C)' della funzione modello di cui è in corso la compilazione
+          with
+          [
+              T=double,
+              C=matrix3D<int,eql_default<int>>
+          ]
+C:\Users\PC\Desktop\Basic-Cpp-Algorithms\Matrix3D\Matrice3D_ver2\Matrice3D\main.cpp(265): message : vedere il riferimento all'istanza 'matrix3D<double,eql_default<T>>::matrix3D<matrix3D<int,eql_default<int>>>(C)' della funzione modello di cui è in corso la compilazione
+          with
+          [
+              T=double,
+              C=matrix3D<int,eql_default<int>>
+          ]

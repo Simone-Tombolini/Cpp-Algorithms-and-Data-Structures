@@ -194,6 +194,11 @@ void test_matrice_costante_primitivi(bool set = true)
 
     }
 }
+struct int_plus1 {
+    int operator()(int a) {
+        return a = a +1;
+    }
+};
 void test_iteratori(bool set = true) {
     if (set == true) {
         cout << "---------------------Test iteratori ---------------------" << endl;
@@ -220,6 +225,11 @@ void test_iteratori(bool set = true) {
         
         m.fill(a+2,a+3);
         m.print_matrix();
+        matrice = transform<int, int, int_plus1, matrix3D<int>::iterator>(matrice);
+        matrice.print_matrix();
+       
+        
+      
     }
 }
 void test_casi_limite(bool set = true) {
@@ -238,6 +248,7 @@ void test_casi_limite(bool set = true) {
         e = matrice.end();
         b--;
         cout << *b;
+        
     }
 }
 int main()
@@ -249,8 +260,10 @@ int main()
     test_metodi_ausiliari_primitivi();
     test_matrice_costante_primitivi();
     test_iteratori();
-    test_casi_limite(false);
-  
+    test_casi_limite();
+    matrix3D<int> matrice(2, 3, 2, 10);
+    matrix3D<double> m2 = matrice;
+    m2.print_matrix();
     #endif
 }
 
