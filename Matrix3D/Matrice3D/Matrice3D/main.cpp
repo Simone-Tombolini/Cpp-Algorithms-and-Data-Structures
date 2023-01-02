@@ -75,14 +75,14 @@ void test_metodi_ausiliari_primitivi(bool set = true) {
             }
         };
         matrix3D<double> matrice2(matrice1);
-      
+        cout << "test operatore == e !=" << endl;
         if (matrice1 == matrice2) {
             cout << "matrice1 == matrice2 risultato: true" << endl;
         }
         else {
             cout << "matrice1 == matrice2 risultato: false" << endl;
         }
-        cout << "test operatore !=" << endl;
+        
        
         
         if (matrice1 != matrice2) {
@@ -90,6 +90,19 @@ void test_metodi_ausiliari_primitivi(bool set = true) {
         }
         else {
             cout << "matrice1 != matrice2 risultato: false" << endl;
+        }
+        if (matrice1 == matrice_tagliata) {
+            cout << "matrice1 == matrice_tagliata risultato: true" << endl;
+        }
+        else {
+            cout << "matrice1 == matrice_tagliata risultato: false" << endl;
+        }
+
+        if (matrice1 != matrice_tagliata) {
+            cout << "matrice1 != matrice_tagliata risultato: true" << endl;
+        }
+        else {
+            cout << "matrice1 != matrice_tagliata risultato: false" << endl;
         }
     }
 }
@@ -112,6 +125,8 @@ int main()
     test_metodi_fonamentali_primitivi();
     test_metodi_ausiliari_primitivi();
     test_matrice_costante_primitivi(false);
+    int array[10];
+    cout << array + 5;
     #endif
 }
 

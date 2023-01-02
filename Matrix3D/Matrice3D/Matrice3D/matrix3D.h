@@ -306,20 +306,25 @@ public:
 
     
     bool operator==( matrix3D &other) const {
-        E eql;
-        int x, y, z;
+        E eql;//creazione dell'oggetto funtore
+        int x, y, z;//variabili per rendere più chiaro il codice
         x = other.size_x();
         y = other.size_y();
         z = other.size_z();
-
+        //contollo la differenza in dimensioni
+        if (x != sz_x || y != sz_y || z != sz_z) {//non uso il funtore essendo la size un primitivo
+            return false;
+        }
+        //nel caso fossero uguali contollo i valori
         for (size_type k = 0; k < z; ++k) {//scorro i piani
 
             for (size_type j = 0; j < y; ++j) {//scorro le righe
 
                 for (size_type i = 0; i < x; ++i) {//scorro le colonne
-                    if (!(eql(other(k, j, i), _matrix[k][j][i]))) {
+                    if (!(eql(other(k, j, i), _matrix[k][j][i]))) //utilizzio il funtore per contollare la differenza fra due 
+                    {
                         return false;
-                    }//COMPARAZIONE AGGIUNGERE FUNTORE è corretto?
+                    }
 
                 }
 
@@ -334,6 +339,394 @@ public:
     {
         return !(*this == other);
     }
+
+    //random access iteretor
+
+   
+
+	// Solo se serve anche const_iterator aggiungere la seguente riga
+	class const_iterator; // forward declaration
+
+	class iterator {
+		//	
+	public:
+		typedef std::random_access_iterator_tag iterator_category;
+		typedef T                        value_type;
+		typedef ptrdiff_t                difference_type;
+		typedef T* pointer;
+		typedef T& reference;
+
+
+		iterator(): _ptr(nullptr) {
+			
+		}
+
+		//iterator(const iterator& other): _ptr(other._ptr) {
+		//	
+		//}
+
+		//iterator& operator=(const iterator& other) {
+		//	//!!!
+		//}
+
+		//~iterator() {
+		//	//!!!
+		//}
+
+		// Ritorna il dato riferito dall'iteratore (dereferenziamento)
+		reference operator*() const {
+            return *_ptr;
+		}
+
+		// Ritorna il puntatore al dato riferito dall'iteratore
+		pointer operator->() const {
+            return _ptr;
+		}
+
+		// Operatore di accesso random
+		reference operator[](int index) {
+			//!!!
+		}
+
+		// Operatore di iterazione post-incremento
+		iterator operator++(int) {
+			//!!!
+		}
+
+		// Operatore di iterazione pre-incremento
+		iterator& operator++() {
+			
+		}
+
+		// Operatore di iterazione post-decremento
+		iterator operator--(int) {
+			//!!!
+		}
+
+		// Operatore di iterazione pre-decremento
+		iterator& operator--() {
+			//!!!
+		}
+
+		// Spostamentio in avanti della posizione
+		iterator operator+(int offset) {
+			//!!!
+		}
+
+		// Spostamentio all'indietro della posizione
+		iterator operator-(int offset) {
+			//!!!
+		}
+
+		// Spostamentio in avanti della posizione
+		iterator& operator+=(int offset) {
+			//!!!
+		}
+
+		// Spostamentio all'indietro della posizione
+		iterator& operator-=(int offset) {
+			//!!!
+		}
+
+		// Numero di elementi tra due iteratori
+		difference_type operator-(const iterator& other) {
+			//!!!
+		}
+
+		// Uguaglianza
+		bool operator==(const iterator& other) const {
+			//!!!
+		}
+
+		// Diversita'
+		bool operator!=(const iterator& other) const {
+			//!!!
+		}
+
+		// Confronto
+		bool operator>(const iterator& other) const {
+			// !!!!
+		}
+
+
+		bool operator>=(const iterator& other) const {
+			/// !!!!
+		}
+
+		// Confronto
+		bool operator<(const iterator& other) const {
+			/// !!!!
+		}
+
+
+		// Confronto
+		bool operator<=(const iterator& other) const {
+			//!!!
+		}
+
+
+		// Solo se serve anche const_iterator aggiungere le seguenti definizioni
+
+		friend class const_iterator;
+
+		// Uguaglianza
+		bool operator==(const const_iterator& other) const {
+			//!!!
+		}
+
+		// Diversita'
+		bool operator!=(const const_iterator& other) const {
+			//!!!
+		}
+
+		// Confronto
+		bool operator>(const const_iterator& other) const {
+			//!!!
+		}
+
+
+		bool operator>=(const const_iterator& other) const {
+			//!!!
+		}
+
+		// Confronto
+		bool operator<(const const_iterator& other) const {
+			//!!!
+		}
+
+
+		// Confronto
+		bool operator<=(const const_iterator& other) const {
+			//!!!
+		}
+
+		// Solo se serve anche const_iterator aggiungere le precedenti definizioni
+
+	private:
+		//Dati membro
+
+		// La classe container deve essere messa friend dell'iteratore per poter
+		// usare il costruttore di inizializzazione.
+		friend class matrix3D; // !!! Da cambiare il nome!
+        T*** _ptr;
+        size_type _z, _y, _x;
+		// Costruttore privato di inizializzazione usato dalla classe container
+		// tipicamente nei metodi begin e end
+		iterator(T* ptr, size_type z, size_type y, size_type x) {
+            _ptr = ptr;
+            _z = z;
+            _y = y;
+            _x = x;
+		}
+
+		// !!! Eventuali altri metodi privati
+
+	}; // classe iterator
+
+	// Ritorna l'iteratore all'inizio della sequenza dati
+	iterator begin() {
+		return iterator(_matrix, sz_z, sz_y, sz_x);
+	}
+
+	// Ritorna l'iteratore alla fine della sequenza dati
+	iterator end() {
+		return iterator(&_matrix[sz_z - 1][sz_y - 1][sz_x], sz_z, sz_y, sz_x);
+	}
+
+
+
+	class const_iterator {
+		//	
+	public:
+		typedef std::random_access_iterator_tag iterator_category;
+		typedef T                        value_type;
+		typedef ptrdiff_t                difference_type;
+		typedef const T* pointer;
+		typedef const T& reference;
+
+
+		const_iterator() {
+			//!!!
+		}
+
+		const_iterator(const const_iterator& other) {
+			//!!!
+		}
+
+		const_iterator& operator=(const const_iterator& other) {
+			//!!!
+		}
+
+		~const_iterator() {
+			//!!!
+		}
+
+		// Ritorna il dato riferito dall'iteratore (dereferenziamento)
+		reference operator*() const {
+			//!!!
+		}
+
+		// Ritorna il puntatore al dato riferito dall'iteratore
+		pointer operator->() const {
+			//!!!
+		}
+
+		// Operatore di accesso random
+		reference operator[](int index) {
+			//!!!
+		}
+
+		// Operatore di iterazione post-incremento
+		const_iterator operator++(int) {
+			//!!!
+		}
+
+		// Operatore di iterazione pre-incremento
+		const_iterator& operator++() {
+			//!!!
+		}
+
+		// Operatore di iterazione post-decremento
+		const_iterator operator--(int) {
+			//!!!
+		}
+
+		// Operatore di iterazione pre-decremento
+		const_iterator& operator--() {
+			//!!!
+		}
+
+		// Spostamentio in avanti della posizione
+		const_iterator operator+(int offset) {
+			//!!!
+		}
+
+		// Spostamentio all'indietro della posizione
+		const_iterator operator-(int offset) {
+			//!!!
+		}
+
+		// Spostamentio in avanti della posizione
+		const_iterator& operator+=(int offset) {
+			//!!!
+		}
+
+		// Spostamentio all'indietro della posizione
+		const_iterator& operator-=(int offset) {
+			//!!!
+		}
+
+		// Numero di elementi tra due iteratori
+		difference_type operator-(const const_iterator& other) {
+			//!!!
+		}
+
+		// Uguaglianza
+		bool operator==(const const_iterator& other) const {
+			//!!!
+		}
+
+		// Diversita'
+		bool operator!=(const const_iterator& other) const {
+			//!!!
+		}
+
+		// Confronto
+		bool operator>(const const_iterator& other) const {
+			//!!!
+		}
+
+
+		bool operator>=(const const_iterator& other) const {
+			//!!!
+		}
+
+		// Confronto
+		bool operator<(const const_iterator& other) const {
+			//!!!
+		}
+
+
+		// Confronto
+		bool operator<=(const const_iterator& other) const {
+			//!!!
+		}
+
+
+		// Solo se serve anche iterator aggiungere le seguenti definizioni
+
+		friend class iterator;
+
+		// Uguaglianza
+		bool operator==(const iterator& other) const {
+			//!!!
+		}
+
+		// Diversita'
+		bool operator!=(const iterator& other) const {
+			//!!!
+		}
+
+		// Confronto
+		bool operator>(const iterator& other) const {
+			//!!!
+		}
+
+
+		bool operator>=(const iterator& other) const {
+			//!!!
+		}
+
+		// Confronto
+		bool operator<(const iterator& other) const {
+			//!!!
+		}
+
+
+		// Confronto
+		bool operator<=(const iterator& other) const {
+			//!!!
+		}
+
+		// Costruttore di conversione iterator -> const_iterator
+		const_iterator(const iterator& other) {
+			//!!!
+		}
+
+		// Assegnamento di un iterator ad un const_iterator
+		const_iterator& operator=(const iterator& other) {
+			//!!!
+		}
+
+		// Solo se serve anche iterator aggiungere le precedenti definizioni
+
+	private:
+		//Dati membro
+
+		// La classe container deve essere messa friend dell'iteratore per poter
+		// usare il costruttore di inizializzazione.
+		friend class CLASSE_CONTAINER_PADRE; // !!! Da cambiare il nome!
+
+		// Costruttore privato di inizializzazione usato dalla classe container
+		// tipicamente nei metodi begin e end
+		//const_iterator(/*!!!*/) {
+		//	//!!! 
+		//}
+
+		// !!! Eventuali altri metodi privati
+
+	}; // classe const_iterator
+
+	// Ritorna l'iteratore all'inizio della sequenza dati
+	const_iterator begin() const {
+		return const_iterator(/*!!!*/);
+	}
+
+	// Ritorna l'iteratore alla fine della sequenza dati
+	const_iterator end() const {
+		return const_iterator(/*!!!*/);
+	}
+
 
     private:
     
@@ -378,7 +771,7 @@ public:
 
         }
         cout << "}" <<std::endl;
-        
+        cout << &_matrix[sz_z-1][sz_y-1][sz_x];
         }
         #endif
         
