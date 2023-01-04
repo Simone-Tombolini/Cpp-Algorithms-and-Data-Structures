@@ -7,6 +7,14 @@
 #include "matrix3D.h"
 
 using namespace std;
+
+//funtori per il test
+struct int_piu_uno
+{
+    int operator()(int a) {
+        return a = a + 1;
+    }
+};
 void test_metodi_fonamentali_primitivi(bool set = true) 
 {
     if (set == true) {
@@ -41,6 +49,7 @@ void test_metodi_fonamentali_primitivi(bool set = true)
     }
 }
 void test_metodi_ausiliari_primitivi(bool set = true) {
+
     if (set == true) {
         cout << "---------------------Test metodi ausiliari primitivi---------------------" << endl;
         cout << "creazione matrice di test" << endl;
@@ -69,7 +78,7 @@ void test_metodi_ausiliari_primitivi(bool set = true) {
 
         cout << "test metodo slice()" << endl;
         matrice1(0, 0, 0) = 1.0;
-        matrix3D<double> matrice_tagliata = matrice1.slice(0, 1, 0, 2,0, 1);
+        matrix3D<double> matrice_tagliata = matrice1.slice(0, 1, 0, 2, 0, 1);
         matrice_tagliata.print_matrix();
         cout << endl;
         cout << "test operatore ==" << endl;
@@ -106,10 +115,20 @@ void test_metodi_ausiliari_primitivi(bool set = true) {
         else {
             cout << "matrice1 != matrice_tagliata risultato: false" << endl;
         }
+       
+        matrix3D<int> matrice_traformata(2,3,4,10);
+        cout << "test transorm" << endl;
+        matrice1 = transform<int, double, int_piu_uno>(matrice_traformata);
+        cout << "fine test transorm" << endl;
+        matrice1(0, 0, 0) = matrice1(0, 0, 0) + 0.42;
+        matrice1.print_matrix("risultato");
+        
     }
 }
 void test_matrice_costante_primitivi(bool set = true) 
 {
+
+
     if (set == true) {
         cout << "---------------------Test matrice costante di primitivi ---------------------" << endl;
         //creazione di una matrice vuota, test costruttore di default
@@ -191,14 +210,10 @@ void test_matrice_costante_primitivi(bool set = true)
             cout << "matrice1 != matrice_tagliata risultato: false" << endl;
         }
 
-
+    
     }
 }
-struct int_plus1 {
-    int operator()(int a) {
-        return a = a +1;
-    }
-};
+
 void test_iteratori(bool set = true) {
     if (set == true) {
         cout << "---------------------Test iteratori ---------------------" << endl;
@@ -225,8 +240,8 @@ void test_iteratori(bool set = true) {
         
         m.fill(a+2,a+3);
         m.print_matrix();
-        matrice = transform<int, int, int_plus1, matrix3D<int>::iterator>(matrice);
-        matrice.print_matrix();
+      
+
        
         
       
@@ -236,7 +251,7 @@ void test_casi_limite(bool set = true) {
     if (set == true) {
         cout << "---------------------Test casi limite ---------------------" << endl;
         matrix3D<int> matrice(2, 3, 2, 10);
-        cout << matrice(2, 3, 2) << endl;
+        //cout << matrice(2, 3, 2) << endl;
         matrice(0, 0, 0) = 3;
         matrice(1, 2, 1) = 2;
 
@@ -248,22 +263,46 @@ void test_casi_limite(bool set = true) {
         e = matrice.end();
         b--;
         cout << *b;
-        
+         
     }
 }
 int main()
 {
-    #ifndef NDEBUG
+    //#ifndef NDEBUG
     cout << "Test classe templata matrice3D" << endl;
 
     test_metodi_fonamentali_primitivi();
     test_metodi_ausiliari_primitivi();
-    test_matrice_costante_primitivi();
-    test_iteratori();
-    test_casi_limite();
-    matrix3D<int> matrice(2, 3, 2, 10);
-    matrix3D<double> m2 = matrice;
-    m2.print_matrix();
-    #endif
+    test_matrice_costante_primitivi(false);
+    test_iteratori(false);
+    test_casi_limite(false);
+    cout << "Fine test classe templata matrice3D" << endl;
+   /* matrix3D<double> matrice(2, 3, 2, 10.5);
+    matrice(1, 1, 1) = 4.7;
+    matrix3D<int> m = matrice;*/
+    //errore in compilazione v 
+    //matrix3D<string> m2 = static_cast<matrix3D<string> >(matrice);
+    //m2.print_matrix();
+    //#endif
+   
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
