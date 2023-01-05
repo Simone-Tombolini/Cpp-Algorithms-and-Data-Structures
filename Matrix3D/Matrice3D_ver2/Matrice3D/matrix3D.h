@@ -1,20 +1,21 @@
-//matrice3D.h Questo file contiene la classe templata.
+//matrix3D.h Questo file contiene la classe templata.
 
 //guardie
-#ifndef MATRICE3D_H
-#define MATRICE3D_H
+#ifndef MATRICX3D_H
+#define MATRICX3D_H
 
-#include<iostream>
-#include<cassert>
-//#include<algorithm>
+#include<iostream> // cout
+#include<cassert>  // assert
 #include <iterator> // std::forward_iterator_tag
 #include <cstddef>  // std::ptrdiff_t
+#include<string> // string per stampa di debug
+#include<algorithm> //swap
+#include "out_of_bound_exception.h"
 
-#ifndef NDEBUG
-#include<string>
-#endif
 
-using namespace std;
+
+
+using namespace std;//nulla di custom si sovrappone alla std
 
 template<typename T>
 struct eql_default {
@@ -64,30 +65,36 @@ public:
 	matrix3D(const size_type size_z, const size_type size_y, const size_type size_x) :
 		_matrix(nullptr), sz_z(0), sz_y(0), sz_x(0), _dim(0)
 	{
-		assert(size_z > 0);
-		assert(size_y > 0);
-		assert(size_x > 0);
-		try {
-			sz_z = size_z;
-			sz_y = size_y;
-			sz_x = size_x;
-			_dim = (sz_z) * (sz_y) * (sz_x);
-			//creazione array dei piani
-			_matrix = new T[_dim];
+		if ((size_x != 0) && (size_y != 0) && (size_z != 0)) {//se tutte sono a 0 allora è come se richiamasse un costruttore vuoto
+		// se anche solo una size e' a 0, ma non tutte sono a 0 lancio l'eccezzione, perchè ho fatto il contorllo prima
+			if ((size_z <= 0) || (size_y <= 0) || (size_x <= 0)) {
+				throw logic_error("bad size");
+			}
+			assert(size_z > 0);
+			assert(size_y > 0);
+			assert(size_x > 0);
+			try {
+				sz_z = size_z;
+				sz_y = size_y;
+				sz_x = size_x;
+				_dim = (sz_z) * (sz_y) * (sz_x);
+				//creazione array dei piani
+				_matrix = new T[_dim];
 
-			//stampa di debug
-			print_matrix("matrice creata");
+				//stampa di debug
+				print_matrix("matrice creata");
 
-		}
-		//questo blocco try catch serve nel caso venga lanciata un eccezione dal fallimento di una new
-		//in questo caso la classe potrebbe essere in uno stato incoerente, e quindi effettuo una clear() 
-		//per riportarla ad uno stato coerente e rilancio l'eccezione
-		//questo blocco verra' ripetuto piu' volte nel progetto
-		//questi commenti sono da considerarsi vaidi per tutte le volte che verra' usata una struttura di questto tipo
-		catch (...)
-		{
-			clear();//evito memory leak
-			throw;//rilancio l'eccezzione
+			}
+			//questo blocco try catch serve nel caso venga lanciata un eccezione dal fallimento di una new
+			//in questo caso la classe potrebbe essere in uno stato incoerente, e quindi effettuo una clear() 
+			//per riportarla ad uno stato coerente e rilancio l'eccezione
+			//questo blocco verra' ripetuto piu' volte nel progetto
+			//questi commenti sono da considerarsi vaidi per tutte le volte che verra' usata una struttura di questto tipo
+			catch (...)
+			{
+				clear();//evito memory leak
+				throw;//rilancio l'eccezzione
+			}
 		}
 	}
 	/**
@@ -102,33 +109,39 @@ public:
 	 * @pre le 3 dimensioni devono essere maggiori di 0 altrimenti la matrice risulta insensata
 	 */
 	matrix3D(const size_type size_z, const size_type size_y, const size_type size_x, const T& default_value) :
-		_matrix(nullptr), sz_z(0), sz_y(0), sz_x(0), _dim(0)
+		_matrix(nullptr), sz_z(0), sz_y(0), sz_x(0), _dim(0) // in caso di fallimento rimangono in uno stato coerente
 	{
-		assert(size_z > 0);
-		assert(size_y > 0);
-		assert(size_x > 0);
-		try {
-			sz_z = size_z;
-			sz_y = size_y;
-			sz_x = size_x;
-			_dim = ((sz_z) * (sz_y) * (sz_x));
-			_matrix = new T[_dim];
-			for (size_type i = 0; i < _dim; ++i) {
-				_matrix[i] = default_value;
+		if ((size_x != 0) && (size_y != 0) && (size_z != 0)) {//se tutte sono a 0 allora è come se richiamasse un costruttore vuoto
+			// se anche solo una size e' a 0, ma non tutte sono a 0 lancio l'eccezzione
+			if ((size_z <= 0) || (size_y <= 0) || (size_x <= 0)) {
+				throw logic_error("bad size");
 			}
+			assert(size_z > 0);
+			assert(size_y > 0);
+			assert(size_x > 0);
+			try {
+				sz_z = size_z;
+				sz_y = size_y;
+				sz_x = size_x;
+				_dim = ((sz_z) * (sz_y) * (sz_x));
+				_matrix = new T[_dim];
+				for (size_type i = 0; i < _dim; ++i) {
+					_matrix[i] = default_value;
+				}
 
-			//stampa di debug
-			print_matrix("matrice creata");
+				//stampa di debug
+				print_matrix("matrice creata");
 
-		}
-		//questo blocco try catch serve nel caso venga lanciata un eccezione dal fallimento di una new
-		//in questo caso la classe potrebbe essere in uno stato incoerente, e quindi effettuo una clear() 
-		//per riportarla ad uno stato coerente e rilancio l'eccezione
-		//questo blocco verr� ripetuto pi� volte nel progetto, questi commenti sono da considerarsi vaidi 
-		catch (...)
-		{
-			clear();//evito memory leack
-			throw;//rilancio l'eccezzione
+			}
+			//questo blocco try catch serve nel caso venga lanciata un eccezione dal fallimento di una new
+			//in questo caso la classe potrebbe essere in uno stato incoerente, e quindi effettuo una clear() 
+			//per riportarla ad uno stato coerente e rilancio l'eccezione
+			//questo blocco verr� ripetuto pi� volte nel progetto, questi commenti sono da considerarsi vaidi 
+			catch (...)
+			{
+				clear();//evito memory leack
+				throw;//rilancio l'eccezzione
+			}
 		}
 	}
 	/**
@@ -150,9 +163,11 @@ public:
 	 * non verrà modificata
 	 * @param other Matrice che verra' usata per la copia
 	 */
-	matrix3D(const matrix3D<T>& other) :
+	matrix3D(const matrix3D& other) :
 		_matrix(nullptr), sz_z(0), sz_y(0), sz_x(0), _dim(0)
 	{
+		
+
 		try {
 			//copio i parametri
 			sz_z = other.size_z();
@@ -160,7 +175,7 @@ public:
 			sz_x = other.size_x();
 			_dim = other.dim();
 			//creo il nuovo array
-			_matrix = new T[_dim];
+			_matrix = new T[other.dim()];
 
 
 			for (size_type i = 0; i < _dim; ++i) {
@@ -197,21 +212,29 @@ public:
 	matrix3D(const matrix3D<C>& other)
 		: _matrix(nullptr), sz_z(0), sz_y(0), sz_x(0), _dim(0)
 	{
-		//imposto i valori per la nuova matrice
-		sz_z = other.size_z();
-		sz_y = other.size_y();
-		sz_x = other.size_x();
-		_dim = other.dim();
-		//creo l'array
-		_matrix = new T[_dim];
+		try {
+			//imposto i valori per la nuova matrice
+			sz_z = other.size_z();
+			sz_y = other.size_y();
+			sz_x = other.size_x();
+			_dim = other.dim();
+			//creo l'array
+			_matrix = new T[_dim];
 
-		
-		for (size_type i = 0; i < _dim; ++i) {//scorro la matrice
-			//qui viene effettuato il cast
-			_matrix[i] = static_cast<T>(other[i]);
+			//throw;
+			//qui ho provato a far scattare l'eccezione io
+
+			for (size_type i = 0; i < _dim; ++i) {//scorro la matrice
+				//qui viene effettuato il cast
+				_matrix[i] = static_cast<T>(other[i]);
+			}
+			//stampa di debug
+			print_matrix("matrice castata");
 		}
-		//stampa di debug
-		print_matrix("matrice castata");
+		catch (...) {
+			clear();
+			throw;
+		}
 	}
 
 	/**
@@ -241,19 +264,25 @@ public:
 	 */
 	T& operator[](const size_type i)
 	{
+	/*	if (i < 0 || i >= dim) {
+			throw logic_error("bad index");
+		}*/
 		return _matrix[i];
 	}
 	 /**
 	 * @brief Operatore ad una dimensione che ritorna il dato contenuto in una cella della matrice 
 	 * Ritorna il parametro della matrice ad una posizione monodimensionale, l'ordine è lo stesso degli
 	 * iteratori, rendendo questo metodo un alternativa alla creazione di un iteratore ed all'utilizzao del metodo[]
-	 * dell'iteratore, non non è definita una versione costante  per non permettere la sola lettura ad una matirce
-	 * non costante (metodo non richiesto dal progetto, leggere la relazione per le motivazioni di questa scelta implementativa)
+	 * dell'iteratore.
+	 * (metodo non richiesto dal progetto, leggere la relazione per le motivazioni di questa scelta implementativa)
 	 * @param i indice in cui si richiedono i dati
 	 * @return const T& - ritorna il valore della matrice costante
 	 */
 	const T& operator[](const size_type i) const
 	{
+		//if (i < 0 || i >= dim) {
+		//	throw logic_error("bad index");
+		//}
 		return _matrix[i];
 	}
 
@@ -299,16 +328,17 @@ public:
 	 */
 	void clear()
 	{
+	
+		//eliminazione della matrice
+		delete[] _matrix;
+		//imposta il puntatore a nullptr
+		_matrix = nullptr;
 		//imposta le dimensioni a 0
 		sz_x = 0;
 		sz_y = 0;
 		sz_z = 0;
 		_dim = 0;
-		//eliminazione della matrice
-		delete[] _matrix;
-		//imposta il puntatore a nullptr
-		_matrix = nullptr;
-		//post condizioni di controllo, piuttosto ridondanti ma le inserisco ugualmente
+		//post condizioni di controllo, sono servite in debug, ora sono inutili ma le lascio comunque
 		assert(sz_z == 0);
 		assert(sz_y == 0);
 		assert(sz_x == 0);
@@ -317,20 +347,14 @@ public:
 		print_message("matrice svuotata");
 	}
 
-
-	//ATTENZIONE
-
-	//RICORDARSI DI INSERIRE NOME DI ECCEZIONE CUSTOM IN DOC
-
-
-
 	/**
 	 * @brief Operatore (), prinipale metodo di lettura e scrittura
 	 * Questo è il principlae metodo di lettura e scrittura della classe,
 	 * i 3 parametri indicano la posizione in cui si vuole accedere alla matrice, 
 	 * l'operatore retituisce il riferimento al dato richiesto nella posizione.
 	 * Se si cerca di accedere a dei dati con anche solo un indice fuori dalla matrice 
-	 * verra' lanciata un eccezione di tipo "RICORDARSI DI INSERIRE NOME DI ECCEZIONE CUSTOM", si ricorda che la matrice parte dalla posizione 0 0 0
+	 * verra' lanciata un eccezione di tipo "out_of_bound_exception", 
+	 * si ricorda che la matrice parte dalla posizione 0 0 0
 	 * e finisce a z-1, y-1,x-1, usando quindi la stessa convenzione dei normali array definiti in C++, 
 	 * ma utilizzando 3 dimensioni al posto che una.  
 	 * @param z Parametro di accesso per i piani
@@ -339,32 +363,42 @@ public:
 	 * @return T& - refernce non costante al dato puntato
 	 */
     T& operator()(const size_type z, const size_type y, const size_type x) {
+		//constollo correttezza degli indici richiesti, in caso contrario lancio eccezione
+		if ((z < 0) || (z >= sz_z) || (y < 0) || (y >= sz_y) || (x < 0) || (x >= sz_x))
+		{
+			throw out_of_bound_exception("invalid indexs", z, y, x);
+		}
+		else {//questo blocco else è ridondante ma per sicurezza lo inserisco comunque
+			//queste assert servono a contorllare se il lancio dell'eccezione non è andato a buon fine
+			assert(z >= 0);
+			assert(y >= 0);
+			assert(x >= 0);
+			assert(z <= sz_z);
+			assert(y <= sz_y);
+			assert(x <= sz_x);
+			size_type index = 0;
 
-		size_type index = 0;
+			for (size_type k = 0; k < sz_z; ++k) {
 
-        for (size_type k = 0; k < sz_z; ++k) {
-           
-            for (size_type j = 0; j < sz_y; ++j) {
-               
+				for (size_type j = 0; j < sz_y; ++j) {
 
-                for (size_type i = 0; i < sz_x; ++i) {
-					
-					if (z == k && j == y && i == x) {
-						return _matrix[index];
+
+					for (size_type i = 0; i < sz_x; ++i) {
+
+						if (z == k && j == y && i == x) {
+							return _matrix[index];
+						}
+						++index;
 					}
-					++index;
-                }
-                
-            }
 
-        }
+				}
 
-		
-		
-		
+			}
+			//questo codice non dovrebbe mai essere eseguito, per sicurezza rilancio qui l'eccezione 
+			throw out_of_bound_exception("fatal error", z, y, x);
+			return _matrix[0];//non fa lamentare il compilatore
+		}
     }
-
-	//RICORDARSI ANCHE QUI
 
 	/**
 	 * @brief Operatore (), prinipale metodo di sola lettura
@@ -372,7 +406,8 @@ public:
 	 * i 3 parametri indicano la posizione in cui si vuole accedere alla matrice, 
 	 * l'operatore retituisce il riferimento costante al dato richiesto nella posizione.
 	 * Se si cerca di accedere a dei dati con anche solo un indice fuori dalla matrice 
-	 * verra' lanciata un eccezione di tipo "RICORDARSI DI INSERIRE NOME DI ECCEZIONE CUSTOM", si ricorda che la matrice parte dalla posizione 0 0 0
+	 * verra' lanciata un eccezione custom di tipo "out_of_bound_exception", 
+	 * si ricorda che la matrice parte dalla posizione 0 0 0
 	 * e finisce a z-1, y-1,x-1, usando quindi la stessa convenzione dei normali array definiti in C++,
 	 * ma utilizzando 3 dimensioni al posto che una.  
 	 * @param z Parametro di accesso per i piani
@@ -381,26 +416,39 @@ public:
 	 * @return T& - refernce costante al dato puntato
 	 */
     const T& operator()(const size_type z, const size_type y, const size_type x) const {
+		if ((z < 0) || (z >= sz_z) || (y < 0) || (y >= sz_y) || (x < 0) || (x >= sz_x))
+		{
+			throw out_of_bound_exception("invalid indexs", z, y, x);
+		}
+		else {
+			assert(z >= 0);
+			assert(y >= 0);
+			assert(x >= 0);
+			assert(z <= sz_z);
+			assert(y <= sz_y);
+			assert(x <= sz_x);
+			size_type index = 0;
 
-		size_type index = 0;
+			for (size_type k = 0; k < sz_z; ++k) {
 
-		for (size_type k = 0; k < sz_z; ++k) {
-
-			for (size_type j = 0; j < sz_y; ++j) {
+				for (size_type j = 0; j < sz_y; ++j) {
 
 
-				for (size_type i = 0; i < sz_x; ++i) {
+					for (size_type i = 0; i < sz_x; ++i) {
 
-					if (z == k && j == y && i == x) {
-						return _matrix[index];
+						if (z == k && j == y && i == x) {
+							return _matrix[index];
+						}
+						++index;
 					}
-					++index;
+
 				}
 
 			}
-
+			//questo codice non dovrebbe mai essere eseguito, per sicurezza rilancio qui l'eccezione 
+			throw out_of_bound_exception("fatal error", z, y, x);
+			return _matrix[0];//non fa lamentare il compilatore
 		}
-		
     }
 
  
@@ -445,11 +493,16 @@ public:
     }
 	/**
 	 * @brief Metodo slice che permette di tagliare la matrice
-	 * Questo metodo ritorna una matrce più piccola della matrice su cui è applicata
-	 * Questo metodo prende in igresso 3 coppie di indici per poter permettere di indicare
+	 * Questo metodo ritorna una matrice su cui è applicato un taglio definito nei parametri da
+	 * 3 coppie di indici per poter permettere di indicare
 	 * da che punto a che punto della matrice effettuare il taglio.
 	 * Ovviamente se gli indici non rispettano i parametri dell'operatore () opuure 
-	 * il primo indice è superiore al secondo viene lanciata un eccezioen del tipo "INSEIRE TIPO QUI"
+	 * il primo indice di una coppia è superiore al secondo viene lanciata un eccezione 
+	 * del tipo "std::logic_error" con il messaggio "bad slice".
+	 * La slice genera una nuova matrice, che comprende i valori dal primo indice della coppia comprese
+	 * fino al secondo indice della coppia escluso.
+	 * Quindi la richiesta di una coppia di indici (0 0) (1 1) ecc ecc non è valida, 
+	 * mentre la coppia di indici (0 size) comprende tutti i dati della matrice per quella dimensione.
 	 * @param z1 primo indice dei piani 
 	 * @param z2 secondo indice dei piani
 	 * @param y1 primo indice delle righe
@@ -459,34 +512,37 @@ public:
 	 * @return matrix3D - la matrice tagliata
 	 */
     matrix3D slice(const size_type z1, const size_type z2, const size_type y1, const size_type y2, const size_type x1, const size_type x2) const{
-		assert(z1 >= 0);
-		assert(y1 >= 0);
-		assert(x1 >= 0);
-		assert(z2 <= sz_z);
-        assert(y2 <= sz_y);
-        assert(x2 <= sz_x);
-		size_type size_z = z2 -z1;
-		size_type size_y = y2 - y1;
-		size_type size_x = x2 - x1;
+		if ((z1 < 0) || (z1 > sz_z) || (y1 < 0) || (y1 > sz_y) || (x1 < 0) || (x1 > sz_x) || //validita' primi indici
+			(z2 < 0) || (z2 > sz_z) || (y2 < 0) || (y2 > sz_y) || (x2 < 0) || (x2 > sz_x) || // validita' dei secondi indici
+			(z1 > z2) || (y1 > y2) || (x1 > x2)) //contollo correttezza ordine indici
+		{
+			throw std::logic_error("bad slice");
+		}
+		else {
 
-        matrix3D<T> res_matrix(size_z, size_y, size_x);
-		size_type index = 0;
-        for (size_type k = z1; k < z2; ++k) {//scorro i piani
+			size_type size_z = z2 - z1;
+			size_type size_y = y2 - y1;
+			size_type size_x = x2 - x1;
 
-            for (size_type j = y1; j < y2; ++j) {//scorro le righe
+			matrix3D<T> res_matrix(size_z, size_y, size_x);
+			size_type index = 0;
+			for (size_type k = z1; k < z2; ++k) {//scorro i piani
 
-                for (size_type i = x1; i < x2; ++i) {//scorro le colonne
-                    //imposto il nuovo valore in base a cosa e' contenuto nella matrice di partenza
+				for (size_type j = y1; j < y2; ++j) {//scorro le righe
 
-					 res_matrix._matrix[index] = this->operator()(k, j, i);
-					 ++index;
-                }
+					for (size_type i = x1; i < x2; ++i) {//scorro le colonne
+						//imposto il nuovo valore in base a cosa e' contenuto nella matrice di partenza
 
-            }
+						res_matrix[index] = this->operator()(k, j, i);
+						++index;
+					}
 
-        }
+				}
 
-        return res_matrix;
+			}
+
+			return res_matrix;
+		}
     }
 
     /**
@@ -504,7 +560,7 @@ public:
      * @return true - le due matrici hanno le stesse dimensioni e i valori (secondo la logica del funtore E)
      * @return false - le due matrici non hanno le stesse dimensioni e i valori (secondo la logica del funtore E)
      */
-    bool operator==( const matrix3D<T,E> &other) const {
+    bool operator==( const matrix3D &other) const {
         E eql;//creazione dell'oggetto funtore
         size_type x, y, z;//variabili per rendere piu' chiaro il codice
         x = other.size_x();
@@ -1326,7 +1382,7 @@ public:
 	 * @param message messaggio da stampare, se non richiesto non lo stampa
 	 * @param enabled se impostato a false nullifica la funzione
 	 */
-    void print_matrix(const string message = "", const bool enabled = true) const
+    void print_matrix(const char *message = "", const bool enabled = true) const
     {
      
         #ifndef NDEBUG

@@ -18,9 +18,15 @@
     <ClCompile Include="main.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
+    <ClCompile Include="out_of_bound_exception.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="matrix3D.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="out_of_bound_exception.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
   </ItemGroup>
