@@ -6,6 +6,7 @@ In order of development:
 * [LCS Longest Common Subsequence](LCS/)
 * [Mergesort](Merge_Stort/)
 * [Stack](Stack/)
+* [Matrix3D](Matrix3D/)
 
 
 *Totaly free license.*
